@@ -8,11 +8,17 @@ import torch
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
-from mlp import MLP
-from furnari2018 import viterbi, SF1
-from heuristic import vsr_algorithm
+
+# Get the current script's file path
+script_path = os.path.abspath(__file__)
+# Get the directory containing the script
+script_directory = os.path.dirname(script_path)
+parent_directory = os.path.dirname(script_directory)
+sys.path.insert(1, parent_directory)
+
+from model.mlp import MLP
+from temporal_segmentation.heuristic import heuristic_algorithm
 from openpose_script import openpose_script
-from gt_comparison import gtc_algorithm
 
 
 def count_sequences(input_list):
@@ -190,30 +196,16 @@ predicted_video.to_csv('predicted_video.csv', index=False)
 
 
 df = pd.read_csv("predicted_video.csv")
-vsr_predicted, output, output_l = vsr_algorithm(df)
+heur_predicted, output, output_l = heuristic_algorithm(df)
 
 seconds_length = 0
 for i in range(0, len(output_l)):
     seconds_length += output_l[i][1]
 
-#Ground truth comparison
-
-gt_predicted, skills_frames_, skills_seconds_ = gtc_algorithm(seconds_length, total_frames)
-
-gt_l = count_sequences(gt_predicted)
-gt_l = [x for x in gt_l if x[0] != 'none']
+print("Heuristic algorithm output: ", heur_predicted)
+print("Heuristic algorithm output in frames: ", output)
+print("Heuristic algorithm seconds length: ", seconds_length)
 
 
-
-#Video Temporal Segmentation algorithms comparison
-raw_results, raw_value = SF1(gt_predicted, raw_predicted)
-print("Raw_values: ", raw_value)
-
-vsr_results, vsr_value = SF1(gt_predicted, vsr_predicted)
-print("Heuristic values: ", vsr_value)
-
-viterbi_output = viterbi(probabilities_matrix, 10e-20)
-paper_results, paper_value = SF1(gt_predicted, viterbi_output)
-print("Probabilistic values: ", paper_value)
 
 f.close()

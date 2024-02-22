@@ -1,16 +1,26 @@
 """
-Module: vsr
+Module: heur
 
-This module contains functions for video segment reconstruction (VSR).
+This module contains functions for video segment reconstruction (heur).
 """
 
 from statistics import mode
 import pandas as pd
-from codec import encoding
+import os
+import sys 
 
-def adjust_score_value(data):
+# Get the current script's file path
+script_path = os.path.abspath(__file__)
+# Get the directory containing the script
+script_directory = os.path.dirname(script_path)
+parent_directory = os.path.dirname(script_directory)
+sys.path.insert(1, parent_directory)
+
+from inference_scripts.codec import encoding
+
+def adjust_window_value(data):
     """
-    Adjust the score value based on the provided data.
+    Adjust the window value based on the provided data.
 
     Args:
         data (pandas.DataFrame): The input data for adjustment.
@@ -151,23 +161,24 @@ def tr(modes):
 
     return output_frame, output_time
 
-def vsr_algorithm(raw_predicted, window_size=13):
+def heuristic_algorithm(raw_predicted, window_size=13):
     """
-    Perform video segment reconstruction (VSR) algorithm.
+    Perform video segment reconstruction (heur) algorithm.
 
     Args:
         raw_predicted (pandas.DataFrame or list): The input data.
         window_size (int): The size of the window for mode calculation.
 
     Returns:
-        tuple: A tuple containing the VSR result, timeline data, and durations.
+        tuple: A tuple containing the heur result, timeline data, and durations.
     """
     if isinstance(raw_predicted, list):
         raw_predicted = pd.DataFrame(raw_predicted)
 
     total_frames = len(raw_predicted)
 
-    window_size = adjust_score_value(raw_predicted)
+    #Comment the following line to manually set the window size
+    window_size = adjust_window_value(raw_predicted)
 
     if total_frames < window_size:
         window_size = total_frames
@@ -178,14 +189,13 @@ def vsr_algorithm(raw_predicted, window_size=13):
     #Filtering and Noise Removal
     modes = fnr(modes)
     #Timeline Reconstructor
-
     output_frame, output_time = tr(modes)
 
-    vsr_predicted = []
+    heur_predicted = []
     for i in range(0, len(output_frame)):
         for j in range(output_frame[i][1], output_frame[i][2] + 1):
-            vsr_predicted.append(output_frame[i][0])
+            heur_predicted.append(output_frame[i][0])
 
-    vsr_predicted = encoding(vsr_predicted)
+    heur_predicted = encoding(heur_predicted)
 
-    return vsr_predicted, output_frame, output_time
+    return heur_predicted, output_frame, output_time
