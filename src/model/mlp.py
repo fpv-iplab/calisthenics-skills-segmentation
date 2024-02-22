@@ -1,5 +1,7 @@
 """Script for training and testing a Multi-Layer Perceptron (MLP) model."""
 
+import os 
+import sys
 import pandas as pd
 import numpy as np
 from torch.utils.data import DataLoader, TensorDataset
@@ -12,6 +14,15 @@ from sklearn.preprocessing import LabelEncoder
 # ----------------- set seed ------------------
 torch.manual_seed(42)
 np.random.seed(42)
+
+# Get the current script's file path
+script_path = os.path.abspath(__file__)
+# Get the directory containing the dataset
+script_directory = os.path.dirname(script_path)
+parent_directory = os.path.dirname(script_directory)
+g_parent_directory = os.path.dirname(parent_directory)
+
+print("The parent directory is: ", g_parent_directory)
 
 
 def hidden_blocks(input_size, output_size, activation_function):
@@ -74,7 +85,9 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     le = LabelEncoder()
-    data = pd.read_csv('dataset_v8.50.csv')
+
+    data = pd.read_csv(g_parent_directory + '/data/keypoints_dataset.csv')
+
 
     X = data.drop(['video_name', 'video_frame', 'skill_id'], axis=1)
     y = data['skill_id']
