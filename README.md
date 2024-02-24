@@ -45,4 +45,4 @@ pip3 install -r requirements.txt
 
 Then, you will need to install OpenPose in your computer, all the steps for its installation are listed in the following link: 
 
-<a href="https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/installation/0_index.md" </a> 
+<a href="https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/installation/0_index.md" OpenPose installation guide.</a> 
