@@ -4,7 +4,9 @@ This repository hosts the keypoints dataset and some additional codes related to
 `
 Finocchiaro, A.; Farinella, G. and Furnari, A. (2024). Calisthenics Skills Temporal Video Segmentation.  In Proceedings of the 19th International Joint Conference on Computer Vision, Imaging and Computer Graphics Theory and Applications - Volume 2: VISAPP, ISBN 978-989-758-679-8, ISSN 2184-4321, pages 182-190.   
 `
+
 Other works involved:
+
 `
 [JVCI 2018] A. Furnari, S. Battiato, G. M. Farinella, Personal-Location-Based Temporal Segmentation of Egocentric Video for Lifelogging Applications . Journal of Visual Communication and Image Representation , 52 , pp. 1-12
 `
@@ -43,4 +45,4 @@ pip3 install -r requirements.txt
 
 Then, you will need to install OpenPose in your computer, all the steps for its installation are listed in the following link: 
 
-<a href="https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/installation/0_index.md">requirements.txt</a> 
+<a href="https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/installation/0_index.md" </a> 
